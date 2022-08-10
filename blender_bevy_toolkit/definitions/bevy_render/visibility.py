@@ -88,12 +88,16 @@ class ComputedVisibility(ComponentBase):
     """
     Controls for Orthographic Projection Matrix
 
-    {
+   {
         "type": "bevy_render::view::visibility::ComputedVisibility",
         "struct": {
-          "is_visible": {
+          "is_visible_in_hierarchy": {
             "type": "bool",
-            "value": true,
+            "value": false,
+          },
+          "is_visible_in_view": {
+            "type": "bool",
+            "value": false,
           },
         },
       },
@@ -105,7 +109,8 @@ class ComputedVisibility(ComponentBase):
         return Map(
             type="bevy_render::view::visibility::ComputedVisibility",
             struct=Map(
-                is_visible=Bool(not obj.hide_render),
+                is_visible_in_hierarchy=Bool(not obj.hide_render),
+                is_visible_in_view=Bool(not obj.hide_render),
             ),
         )
 
