@@ -15,7 +15,7 @@ class Parent(ComponentBase):
         parent_id = collection_objs.index(obj.parent)
 
         return rust_types.Map(
-            type="bevy_transform::components::parent::Parent",
+            type="bevy_hierarchy::components::parent::Parent",
             tuple_struct=rust_types.List(
                 rust_types.Entity(parent_id),
             ),
