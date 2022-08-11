@@ -56,22 +56,23 @@ class Transform(ComponentBase):
             },
         }
         """
-
+        transform = obj.matrix_world
         if obj.parent is None:
             transform = obj.matrix_world
         else:
             transform = obj.matrix_local
 
         position, rotation, scale = transform.decompose()
+
         return rust_types.Map(
             type="bevy_transform::components::transform::Transform",
             struct=rust_types.Map(
                 translation=rust_types.Map(
                     type="glam::f32::vec3::Vec3",
                     struct=rust_types.Map(
-                        x=rust_types.F32(position.x),
-                        y=rust_types.F32(position.y),
-                        z=rust_types.F32(position.z),
+                        x=rust_types.F32(position[0]),
+                        y=rust_types.F32(position[2]),
+                        z=rust_types.F32(position[1]),
                     )
                 ),
                 rotation=rust_types.Quat(rotation),

@@ -25,7 +25,7 @@ def reflect(type_path, processor):
 
 
 Quat = reflect(
-    "glam::f32::sse2::quat::Quat", lambda quat: ron.Tuple(quat.x, quat.y, quat.z, quat.w)
+    "glam::f32::sse2::quat::Quat", lambda quat: ron.Tuple(quat[1], quat[2], quat[3], quat[0])
 )
 Vec2 = reflect("glam::vec2::Vec2", lambda vec: ron.Tuple(vec[0], vec[1]))
 Vec3 = reflect("glam::f32::vec3", lambda vec: ron.Tuple(vec[0], vec[1], vec[2]))
