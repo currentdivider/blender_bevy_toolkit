@@ -95,17 +95,26 @@ class GlobalTransform(ComponentBase):
       },
         """
 
-        transform = obj.matrix_world
+        # If Object has a mesh, then the exported gltf would already have the transform data
+        # therefore no need to add the transform to the .scn file.
+        if obj.type in ["MESH"]:
 
-        # position, rotation, scale = transform.decompose()
-        x_axis = [transform[0][0], transform[0]
-                  [1], transform[0][2], transform[0][3]]
-        y_axis = [transform[1][0], transform[1]
-                  [1], transform[1][2], transform[1][3]]
-        z_axis = [transform[2][0], transform[2]
-                  [1], transform[2][2], transform[2][3]]
-        w_axis = [transform[3][0], transform[3]
-                  [1], transform[3][2], transform[3][3]]
+          x_axis = [1, 0, 0, 0]
+          y_axis = [0, 1, 0, 0]
+          z_axis = [0, 0, 1, 0]
+          w_axis = [0, 0, 0, 1]
+
+        else:
+          transform = obj.matrix_world
+          x_axis = [transform[0][0], transform[0]
+                    [1], transform[0][2], transform[0][3]]
+          y_axis = [transform[1][0], transform[1]
+                    [1], transform[1][2], transform[1][3]]
+          z_axis = [transform[2][0], transform[2]
+                    [1], transform[2][2], transform[2][3]]
+          w_axis = [transform[3][0], transform[3]
+                    [1], transform[3][2], transform[3][3]]
+                    
 
         return rust_types.Map(
             type="bevy_transform::components::global_transform::GlobalTransform",

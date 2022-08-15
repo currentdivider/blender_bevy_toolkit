@@ -64,6 +64,15 @@ class Transform(ComponentBase):
 
         position, rotation, scale = transform.decompose()
 
+        # If Object has a mesh, then the exported gltf would already have the transform data
+        # therefore no need to add the transform to the .scn file.
+        if obj.type in ["MESH"]:
+            position = [0.0 ,0.0 , 0.0]
+            scale.x = 1.0
+            scale.y = 1.0
+            scale.z = 1.0
+            rotation = [1.0, 0.0, 0.0, 0.0]       
+
         return rust_types.Map(
             type="bevy_transform::components::transform::Transform",
             struct=rust_types.Map(
@@ -71,7 +80,7 @@ class Transform(ComponentBase):
                     type="glam::f32::vec3::Vec3",
                     struct=rust_types.Map(
                         x=rust_types.F32(position[0]),
-                        y=rust_types.F32(position[2]),
+                        y=rust_types.F32(-position[2]),
                         z=rust_types.F32(position[1]),
                     )
                 ),

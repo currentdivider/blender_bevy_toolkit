@@ -83,6 +83,7 @@ class VisibilityPanel(bpy.types.Panel):
         )
 
 
+
 @register_component
 class ComputedVisibility(ComponentBase):
     """
