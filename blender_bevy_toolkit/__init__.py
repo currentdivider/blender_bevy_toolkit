@@ -7,6 +7,7 @@ that can be loaded into bevy.
 import os
 import sys
 import logging
+import copy
 
 import bpy
 from bpy.app.handlers import persistent  # pylint: disable=E0401
@@ -275,13 +276,18 @@ class ExportBevy(bpy.types.Operator, ExportHelper):
                 # if item.type == 'MESH':
                 file_path = os.path.join(folder_path, f"{item.name}")
 
-                item.location = [0.0, 0.0, 0.0]                
+                # Store original object transform
+                store_location = copy.deepcopy(item.location)
+                store_rotation = copy.deepcopy(item.rotation_quaternion)
+                store_scale = copy.deepcopy(item.scale)
+
+                item.location = [0.0, 0.0, 0.0]
                 item.rotation_quaternion = [1.0, 0.0, 0.0, 0.0]
                 item.scale = [1.0, 1.0, 1.0]
 
                 bpy.ops.export_scene.gltf(
                     filepath=file_path,
-                    use_select=self.batch_export_selection,
+                    use_selection=self.batch_export_selection,
                     export_format=self.batch_export_format,
                     export_copyright=self.batch_export_copyright,
                     export_image_format=self.batch_export_image_format,
@@ -297,6 +303,11 @@ class ExportBevy(bpy.types.Operator, ExportHelper):
                 )
 
                 item.select_set(False)
+
+                # Restore object transform
+                item.location = store_location
+                item.rotation_quaternion = store_rotation
+                item.scale = store_scale
 
             # restore viewport selection
             for ob in viewport_selection:
